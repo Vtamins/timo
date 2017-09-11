@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+       | Hexo 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="Vtamins Lee">
+    
+    
+
+    <meta name="description" content="Gin源码分析（一）官方demo分析[TOC] 简介Gin是一个golang的微框架，封装比较优雅，API友好，源码注释比较明确。 最近一直在学习Go语言，迅速扫了一遍《Go语言圣经》，觉得只有理论没有实践可不行，因此，很喜欢简洁的gin，就先来看这个吧。 官方demo首先看官方demo 12345678910111213package mainimport &quot;github.com/gin-gon">
+<meta property="og:type" content="article">
+<meta property="og:title" content=" | Hexo">
+<meta property="og:url" content="https://vtamins.github.io/timo/2017/09/11/Gin源码分析一/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Gin源码分析（一）官方demo分析[TOC] 简介Gin是一个golang的微框架，封装比较优雅，API友好，源码注释比较明确。 最近一直在学习Go语言，迅速扫了一遍《Go语言圣经》，觉得只有理论没有实践可不行，因此，很喜欢简洁的gin，就先来看这个吧。 官方demo首先看官方demo 12345678910111213package mainimport &quot;github.com/gin-gon">
+<meta property="og:updated_time" content="2017-09-11T08:36:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content=" | Hexo">
+<meta name="twitter:description" content="Gin源码分析（一）官方demo分析[TOC] 简介Gin是一个golang的微框架，封装比较优雅，API友好，源码注释比较明确。 最近一直在学习Go语言，迅速扫了一遍《Go语言圣经》，觉得只有理论没有实践可不行，因此，很喜欢简洁的gin，就先来看这个吧。 官方demo首先看官方demo 12345678910111213package mainimport &quot;github.com/gin-gon">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/timo/favicon.png">
+    
+    <link rel="stylesheet" href="/timo/css/uno.css">
+    <link rel="stylesheet" href="/timo/css/highlight.css">
+    <link rel="stylesheet" href="/timo/css/archive.css">
+    <link rel="stylesheet" href="/timo/css/china-social-icon.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+  
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/timo/" title="link to homepage">Hexo</a></h1>
+        <hr class="panel-cover__divider" />
+
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/timo/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/timo/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/timo/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title"></h1>
+
+    
+
+    <div class="post-meta">
+      <time datetime="2017-09-11" class="post-meta__date date">2017-09-11</time> 
+
+      <span class="post-meta__tags tags">
+
+          
+
+          
+
+      </span>
+    </div>
+    
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <h1 id="Gin源码分析（一）官方demo分析"><a href="#Gin源码分析（一）官方demo分析" class="headerlink" title="Gin源码分析（一）官方demo分析"></a>Gin源码分析（一）官方demo分析</h1><p>[TOC]</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><em>Gin</em>是一个<em>golang</em>的微<em>框架</em>，封装比较优雅，API友好，源码注释比较明确。</p>
+<p>最近一直在学习Go语言，迅速扫了一遍《Go语言圣经》，觉得只有理论没有实践可不行，因此，很喜欢简洁的gin，就先来看这个吧。</p>
+<h2 id="官方demo"><a href="#官方demo" class="headerlink" title="官方demo"></a>官方demo</h2><p>首先看官方demo</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> <span class="string">"github.com/gin-gonic/gin"</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	r := gin.Default()</div><div class="line">	r.GET(<span class="string">"/ping"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;</div><div class="line">		c.JSON(<span class="number">200</span>, gin.H&#123;</div><div class="line">			<span class="string">"message"</span>: <span class="string">"pong"</span>,</div><div class="line">		&#125;)</div><div class="line">	&#125;)</div><div class="line">	r.Run() <span class="comment">// listen and serve on 0.0.0.0:8080</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="1-1-gin-Default"><a href="#1-1-gin-Default" class="headerlink" title="1.1 gin.Default"></a>1.1 gin.Default</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Default returns an Engine instance with the Logger and Recovery middleware already attached.</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">Default</span><span class="params">()</span> *<span class="title">Engine</span></span> &#123;</div><div class="line">	engine := New()</div><div class="line">	engine.Use(Logger(), Recovery())</div><div class="line">	<span class="keyword">return</span> engine</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这段代码主要完成了以下内容：</p>
+<ol>
+<li>新建一个engine</li>
+<li>使用默认的log、recovery中间层</li>
+</ol>
+<h3 id="1-1-1-看到New（）函数"><a href="#1-1-1-看到New（）函数" class="headerlink" title="1.1.1 看到New（）函数"></a>1.1.1 看到New（）函数</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">New</span><span class="params">()</span> *<span class="title">Engine</span></span> &#123;</div><div class="line">	debugPrintWARNINGNew()</div><div class="line">	engine := &amp;Engine&#123;</div><div class="line">		RouterGroup: RouterGroup&#123;</div><div class="line">			Handlers: <span class="literal">nil</span>,</div><div class="line">			basePath: <span class="string">"/"</span>,</div><div class="line">			root:     <span class="literal">true</span>,</div><div class="line">		&#125;,</div><div class="line">		FuncMap:                template.FuncMap&#123;&#125;,</div><div class="line">		RedirectTrailingSlash:  <span class="literal">true</span>,</div><div class="line">		RedirectFixedPath:      <span class="literal">false</span>,</div><div class="line">		HandleMethodNotAllowed: <span class="literal">false</span>,</div><div class="line">		ForwardedByClientIP:    <span class="literal">true</span>,</div><div class="line">		AppEngine:              defaultAppEngine,</div><div class="line">		UseRawPath:             <span class="literal">false</span>,</div><div class="line">		UnescapePathValues:     <span class="literal">true</span>,</div><div class="line">		MaxMultipartMemory:     defaultMultipartMemory,</div><div class="line">		trees:                  <span class="built_in">make</span>(methodTrees, <span class="number">0</span>, <span class="number">9</span>),</div><div class="line">		delims:                 render.Delims&#123;Left: <span class="string">"&#123;&#123;"</span>, Right: <span class="string">"&#125;&#125;"</span>&#125;,</div><div class="line">		secureJsonPrefix:       <span class="string">"while(1);"</span>,</div><div class="line">	&#125;</div><div class="line">	engine.RouterGroup.engine = engine</div><div class="line">	engine.pool.New = <span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="title">interface</span></span>&#123;&#125; &#123;</div><div class="line">		<span class="keyword">return</span> engine.allocateContext()</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> engine</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>New方法主要生成一个Engine的实例，并进行配置。</p>
+<h3 id="1-1-2-debugPrintWARNINGNew"><a href="#1-1-2-debugPrintWARNINGNew" class="headerlink" title="1.1.2 debugPrintWARNINGNew()"></a>1.1.2 debugPrintWARNINGNew()</h3><p>我们每次启动gin服务器，如果不加</p>
+<p><u>gin.SetMode(gin.ReleaseMode)</u></p>
+<p>这一段，就会输出一段提示</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[WARNING] Running in <span class="string">"debug"</span> mode. Switch to <span class="string">"release"</span> mode in production.</div><div class="line"> - using env:	export GIN_MODE=release</div><div class="line"> - using code:	gin.SetMode(gin.ReleaseMode)</div></pre></td></tr></table></figure>
+<h3 id="1-1-3-新建engine"><a href="#1-1-3-新建engine" class="headerlink" title="1.1.3 新建engine"></a>1.1.3 新建engine</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> Engine <span class="keyword">struct</span> &#123;</div><div class="line">	RouterGroup</div><div class="line">	delims           render.Delims</div><div class="line">	secureJsonPrefix <span class="keyword">string</span></div><div class="line">	HTMLRender       render.HTMLRender</div><div class="line">	FuncMap          template.FuncMap</div><div class="line">	allNoRoute       HandlersChain</div><div class="line">	allNoMethod      HandlersChain</div><div class="line">	noRoute          HandlersChain</div><div class="line">	noMethod         HandlersChain</div><div class="line">	pool             sync.Pool</div><div class="line">	trees            methodTrees</div></pre></td></tr></table></figure>
+<p>engine是框架实例，主要包括:</p>
+<ol>
+<li>muxer  我也不知道是干嘛的，看面看到了再回头改吧</li>
+<li>中间层  中间处理连接的过程，比如 logger、recovery</li>
+<li>其他设置</li>
+</ol>
+<h3 id="1-1-4-分配Context"><a href="#1-1-4-分配Context" class="headerlink" title="1.1.4 分配Context"></a>1.1.4 分配Context</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> Context <span class="keyword">struct</span> &#123;</div><div class="line">	writermem responseWriter</div><div class="line">	Request   *http.Request</div><div class="line">	Writer    ResponseWriter</div><div class="line"></div><div class="line">	Params   Params</div><div class="line">	handlers HandlersChain</div><div class="line">	index    <span class="keyword">int8</span></div><div class="line"></div><div class="line">	engine *Engine</div><div class="line"></div><div class="line">	<span class="comment">// Keys is a key/value pair exclusively for the context of each request.</span></div><div class="line">	Keys <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>&#123;&#125;</div><div class="line"></div><div class="line">	<span class="comment">// Errors is a list of errors attached to all the handlers/middlewares who used this context.</span></div><div class="line">	Errors errorMsgs</div><div class="line"></div><div class="line">	<span class="comment">// Accepted defines a list of manually accepted formats for content negotiation.</span></div><div class="line">	Accepted []<span class="keyword">string</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>context是gin的一个重要组成部分。用来在中间层传递数据流。</p>
+<h2 id="1-2-engine-Use"><a href="#1-2-engine-Use" class="headerlink" title="1.2 engine.Use"></a>1.2 engine.Use</h2><p><code>engine.Use(Logger(), Recovery())</code></p>
+<p>先看到Logger（）</p>
+<h3 id="1-2-1-Logger"><a href="#1-2-1-Logger" class="headerlink" title="1.2.1 Logger()"></a>1.2.1 Logger()</h3><p>这里定义了一个log中间层，在连接处理的过程中生成日志并输出</p>
+<p>上函数：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">LoggerWithWriter</span><span class="params">(out io.Writer, notlogged ...<span class="keyword">string</span>)</span> <span class="title">HandlerFunc</span></span> &#123;</div><div class="line">	isTerm := <span class="literal">true</span></div><div class="line"></div><div class="line">	<span class="keyword">if</span> w, ok := out.(*os.File); !ok ||</div><div class="line">		(os.Getenv(<span class="string">"TERM"</span>) == <span class="string">"dumb"</span> || (!isatty.IsTerminal(w.Fd()) &amp;&amp; !isatty.IsCygwinTerminal(w.Fd()))) ||</div><div class="line">		disableColor &#123;</div><div class="line">		isTerm = <span class="literal">false</span></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="keyword">var</span> skip <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">struct</span>&#123;&#125;</div><div class="line"></div><div class="line">	<span class="keyword">if</span> length := <span class="built_in">len</span>(notlogged); length &gt; <span class="number">0</span> &#123;</div><div class="line">		skip = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">struct</span>&#123;&#125;, length)</div><div class="line"></div><div class="line">		<span class="keyword">for</span> _, path := <span class="keyword">range</span> notlogged &#123;</div><div class="line">			skip[path] = <span class="keyword">struct</span>&#123;&#125;&#123;&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">(c *Context)</span></span> &#123;</div><div class="line">		<span class="comment">// Start timer</span></div><div class="line">		start := time.Now()</div><div class="line">		path := c.Request.URL.Path</div><div class="line">		raw := c.Request.URL.RawQuery</div><div class="line"></div><div class="line">		<span class="comment">// Process request</span></div><div class="line">		c.Next()</div><div class="line"></div><div class="line">		<span class="comment">// Log only when path is not being skipped</span></div><div class="line">		<span class="keyword">if</span> _, ok := skip[path]; !ok &#123;</div><div class="line">			<span class="comment">// Stop timer</span></div><div class="line">			end := time.Now()</div><div class="line">			latency := end.Sub(start)</div><div class="line"></div><div class="line">			clientIP := c.ClientIP()</div><div class="line">			method := c.Request.Method</div><div class="line">			statusCode := c.Writer.Status()</div><div class="line">			<span class="keyword">var</span> statusColor, methodColor, resetColor <span class="keyword">string</span></div><div class="line">			<span class="keyword">if</span> isTerm &#123;</div><div class="line">				statusColor = colorForStatus(statusCode)</div><div class="line">				methodColor = colorForMethod(method)</div><div class="line">				resetColor = reset</div><div class="line">			&#125;</div><div class="line">			comment := c.Errors.ByType(ErrorTypePrivate).String()</div><div class="line"></div><div class="line">			<span class="keyword">if</span> raw != <span class="string">""</span> &#123;</div><div class="line">				path = path + <span class="string">"?"</span> + raw</div><div class="line">			&#125;</div><div class="line"></div><div class="line">			fmt.Fprintf(out, <span class="string">"[GIN] %v |%s %3d %s| %13v | %15s |%s %-7s %s %s\n%s"</span>,</div><div class="line">				end.Format(<span class="string">"2006/01/02 - 15:04:05"</span>),</div><div class="line">				statusColor, statusCode, resetColor,</div><div class="line">				latency,</div><div class="line">				clientIP,</div><div class="line">				methodColor, method, resetColor,</div><div class="line">				path,</div><div class="line">				comment,</div><div class="line">			)</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这部分代码主要做了以下内容：</p>
+<ol>
+<li>判断日志的输出，默认输出到 stdout</li>
+<li>对收到的连接，输出日志，日志的内容包括：请求处理成功的时间戳、http返回状态码、耗时、请求IP、请求方法、请求路径、错误信息</li>
+</ol>
+<h3 id="1-2-2-recovery"><a href="#1-2-2-recovery" class="headerlink" title="1.2.2 recovery()"></a>1.2.2 recovery()</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// RecoveryWithWriter returns a middleware for a given writer that recovers from any panics and writes a 500 if there was one.</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">RecoveryWithWriter</span><span class="params">(out io.Writer)</span> <span class="title">HandlerFunc</span></span> &#123;</div><div class="line">	<span class="keyword">var</span> logger *log.Logger</div><div class="line">	<span class="keyword">if</span> out != <span class="literal">nil</span> &#123;</div><div class="line">		logger = log.New(out, <span class="string">"\n\n\x1b[31m"</span>, log.LstdFlags)</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">(c *Context)</span></span> &#123;</div><div class="line">		<span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">			<span class="keyword">if</span> err := <span class="built_in">recover</span>(); err != <span class="literal">nil</span> &#123;</div><div class="line">				<span class="keyword">if</span> logger != <span class="literal">nil</span> &#123;</div><div class="line">					stack := stack(<span class="number">3</span>)</div><div class="line">					httprequest, _ := httputil.DumpRequest(c.Request, <span class="literal">false</span>)</div><div class="line">					logger.Printf(<span class="string">"[Recovery] panic recovered:\n%s\n%s\n%s%s"</span>, <span class="keyword">string</span>(httprequest), err, stack, reset)</div><div class="line">				&#125;</div><div class="line">				c.AbortWithStatus(<span class="number">500</span>)</div><div class="line">			&#125;</div><div class="line">		&#125;()</div><div class="line">		c.Next()</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这一块主要利用了 Go语言的recovery，实现从错误中回复。</p>
+<p>当请求出现错误时，造成程序报错，将在此恢复，输出日志并返回 状态码500</p>
+<h3 id="1-2-3-engine-Use"><a href="#1-2-3-engine-Use" class="headerlink" title="1.2.3 engine.Use()"></a>1.2.3 engine.Use()</h3><p>这里主要应用中间层</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(engine *Engine)</span> <span class="title">Use</span><span class="params">(middleware ...HandlerFunc)</span> <span class="title">IRoutes</span></span> &#123;</div><div class="line">	engine.RouterGroup.Use(middleware...)</div><div class="line">	engine.rebuild404Handlers()</div><div class="line">	engine.rebuild405Handlers()</div><div class="line">	<span class="keyword">return</span> engine</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里在  engine的  RouterGroup中添加了中间层。 </p>
+<p>404he 405 使用 noRoute 和 noMethod</p>
+<h2 id="1-3-gin-GET"><a href="#1-3-gin-GET" class="headerlink" title="1.3 gin.GET()"></a>1.3 gin.GET()</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// GET is a shortcut for router.Handle("GET", path, handle).</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(group *RouterGroup)</span> <span class="title">GET</span><span class="params">(relativePath <span class="keyword">string</span>, handlers ...HandlerFunc)</span> <span class="title">IRoutes</span></span> &#123;</div><div class="line">	<span class="keyword">return</span> group.handle(<span class="string">"GET"</span>, relativePath, handlers)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里仔细看，这里的 方法 接受者 是 RouterGroup 并不是  Default 返回的 Engine。</p>
+<p>再去看 Engine的定义</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> Engine <span class="keyword">struct</span> &#123;</div><div class="line">	RouterGroup</div><div class="line">	delims           render.Delims</div><div class="line">	secureJsonPrefix <span class="keyword">string</span></div><div class="line">	HTMLRender       render.HTMLRender</div><div class="line">	FuncMap          template.FuncMap</div><div class="line">	allNoRoute       HandlersChain</div><div class="line">	allNoMethod      HandlersChain</div><div class="line">	noRoute          HandlersChain</div><div class="line">	noMethod         HandlersChain</div><div class="line">	pool             sync.Pool</div><div class="line">	trees            methodTrees</div><div class="line">	RedirectTrailingSlash <span class="keyword">bool</span></div><div class="line">	RedirectFixedPath <span class="keyword">bool</span></div><div class="line">	HandleMethodNotAllowed <span class="keyword">bool</span></div><div class="line">	ForwardedByClientIP    <span class="keyword">bool</span></div><div class="line">	AppEngine <span class="keyword">bool</span></div><div class="line">	UseRawPath <span class="keyword">bool</span></div><div class="line">	UnescapePathValues <span class="keyword">bool</span></div><div class="line">	MaxMultipartMemory <span class="keyword">int64</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里使用到了 struct  匿名成员的特性。RouterGroup定义为匿名成员，也就是Engine继承了RouterGroup。</p>
+<p>因此Engine可以调用RouterGroup的方法。</p>
+<p>再看到group.handle 方法，</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(group *RouterGroup)</span> <span class="title">handle</span><span class="params">(httpMethod, relativePath <span class="keyword">string</span>, handlers HandlersChain)</span> <span class="title">IRoutes</span></span> &#123;</div><div class="line">	absolutePath := group.calculateAbsolutePath(relativePath)</div><div class="line">	handlers = group.combineHandlers(handlers)</div><div class="line">	group.engine.addRoute(httpMethod, absolutePath, handlers)</div><div class="line">	<span class="keyword">return</span> group.returnObj()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>主要完成了以下内容：</p>
+<ol>
+<li>计算出绝对路径</li>
+<li>将handlers加入HandlersChain</li>
+<li>添加路由，这里有一颗方法树，在方法树中添加 该路由</li>
+</ol>
+<h2 id="1-3-router-run"><a href="#1-3-router-run" class="headerlink" title="1.3 router.run"></a>1.3 router.run</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(engine *Engine)</span> <span class="title">Run</span><span class="params">(addr ...<span class="keyword">string</span>)</span> <span class="params">(err error)</span></span> &#123;</div><div class="line">	<span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123; debugPrintError(err) &#125;()</div><div class="line"></div><div class="line">	address := resolveAddress(addr)</div><div class="line">	debugPrint(<span class="string">"Listening and serving HTTP on %s\n"</span>, address)</div><div class="line">	err = http.ListenAndServe(address, engine)</div><div class="line">	<span class="keyword">return</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里首先判断端口，默认为8080端口,</p>
+<p>这里调用了 go语言的 net包中的http的 ListenAndServe</p>
+<p>至此，官方的 启动demo分析完成。</p>
+<p>这只是我对于gin的源码分析的第一个版本，还有很多不足，后续会在此基础上进行完善，如有错误欢迎指出。</p>
+
+  </section>
+
+  <section class="post-comments">
+
+    <!-- 将评论系统（例如Disqus、多说、友言、畅言等）提供的代码片段粘贴在这里 -->
+    
+</section>
+
+
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">&copy; 2014-2015. | 由<a href="https://hexo.io/">Hexo</a>强力驱动 | 主题<a href="https://github.com/someus/huno">Huno</a></span>
+    
+</footer>
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/timo/js/jquery.min.js"></script>
+    <script src="/timo/js/main.js"></script>
+    <script src="/timo/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/timo/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>
