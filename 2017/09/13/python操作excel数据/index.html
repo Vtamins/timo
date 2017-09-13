@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      python操作excel数据 | Hexo 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="Vtamins Lee">
+    
+    
+
+    <meta name="description" content="Python Excel数据查找今天突然被老师叫去帮她统计成绩，然后发现是一个大坑。为什么这么说呢： 因为她英语成绩竟然 分了20个excel文件来存。 我们要查找出数学50以上，并且英语90以上的人。这就很尴尬了，我们本来打算都打开来查，但是我的mac打开excel表格的速度实在不敢恭维。怎么办，一个一个查太慢了，有70个人呢。于是乎晚上搜索一下，决定快速写一个脚本来进行查询。">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python操作excel数据 | Hexo">
+<meta property="og:url" content="https://vtamins.github.io/timo/2017/09/13/python操作excel数据/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Python Excel数据查找今天突然被老师叫去帮她统计成绩，然后发现是一个大坑。为什么这么说呢： 因为她英语成绩竟然 分了20个excel文件来存。 我们要查找出数学50以上，并且英语90以上的人。这就很尴尬了，我们本来打算都打开来查，但是我的mac打开excel表格的速度实在不敢恭维。怎么办，一个一个查太慢了，有70个人呢。于是乎晚上搜索一下，决定快速写一个脚本来进行查询。">
+<meta property="og:updated_time" content="2017-09-13T09:16:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python操作excel数据 | Hexo">
+<meta name="twitter:description" content="Python Excel数据查找今天突然被老师叫去帮她统计成绩，然后发现是一个大坑。为什么这么说呢： 因为她英语成绩竟然 分了20个excel文件来存。 我们要查找出数学50以上，并且英语90以上的人。这就很尴尬了，我们本来打算都打开来查，但是我的mac打开excel表格的速度实在不敢恭维。怎么办，一个一个查太慢了，有70个人呢。于是乎晚上搜索一下，决定快速写一个脚本来进行查询。">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/timo/favicon.png">
+    
+    <link rel="stylesheet" href="/timo/css/uno.css">
+    <link rel="stylesheet" href="/timo/css/highlight.css">
+    <link rel="stylesheet" href="/timo/css/archive.css">
+    <link rel="stylesheet" href="/timo/css/china-social-icon.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+  
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/timo/" title="link to homepage">Hexo</a></h1>
+        <hr class="panel-cover__divider" />
+
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/timo/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/timo/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/timo/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">python操作excel数据</h1>
+
+    
+
+    <div class="post-meta">
+      <time datetime="2017-09-13" class="post-meta__date date">2017-09-13</time> 
+
+      <span class="post-meta__tags tags">
+
+          
+            <font class="categories">
+            &#8226; 分类:
+            <a class="categories-link" href="/timo/categories/技术/">技术</a>
+            </font>
+          
+
+          
+             &#8226; 标签:
+            <font class="tags">
+              <a class="tags-link" href="/timo/tags/python/">python</a>
+            </font>
+          
+
+      </span>
+    </div>
+    
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <h1 id="Python-Excel数据查找"><a href="#Python-Excel数据查找" class="headerlink" title="Python Excel数据查找"></a>Python Excel数据查找</h1><p>今天突然被老师叫去帮她统计成绩，然后发现是一个大坑。为什么这么说呢：</p>
+<p>因为她英语成绩竟然 分了20个excel文件来存。</p>
+<p>我们要查找出数学50以上，并且英语90以上的人。这就很尴尬了，我们本来打算都打开来查，但是我的mac打开excel表格的速度实在不敢恭维。怎么办，一个一个查太慢了，有70个人呢。于是乎晚上搜索一下，决定快速写一个脚本来进行查询。</p>
+<a id="more"></a>
+<p>[TOC]</p>
+<h2 id="xlrd-使用介绍"><a href="#xlrd-使用介绍" class="headerlink" title="xlrd 使用介绍"></a>xlrd 使用介绍</h2><p> 1、导入模块</p>
+<p>​      import xlrd</p>
+<p>   2、打开Excel文件读取数据</p>
+<p>​       data = xlrd.open_workbook(‘excelFile.xls’)</p>
+<p>   3、使用技巧</p>
+<p>​        <strong>获取一个工作表</strong></p>
+<p>​        table = data.sheets()[0]          #通过索引顺序获取</p>
+<p>​        table = data.sheet_by_index(0) #通过索引顺序获取</p>
+<p>​        table = data.sheet_by_name(u’Sheet1’)#通过名称获取</p>
+<p>​       <strong> 获取整行和整列的值（数组）</strong></p>
+<p>​         table.row_values(i)</p>
+<p>​         table.col_values(i)</p>
+<p>​       <strong> 获取行数和列数</strong></p>
+<p>　　</p>
+<p>​        nrows = table.nrows</p>
+<p>​        ncols = table.ncols</p>
+<p>​       </p>
+<p><strong>循环行列表数据</strong></p>
+<p>for i in range(nrows ):</p>
+<p>​      print table.row_values(i)</p>
+<p><strong>单元格</strong></p>
+<p>cell_A1 = table.cell(0,0).value</p>
+<p>cell_C4 = table.cell(2,3).value</p>
+<p><strong>使用行列索引</strong></p>
+<p>cell_A1 = table.row(0)[0].value</p>
+<p>cell_A2 = table.col(1)[0].value</p>
+<p><strong>简单的写入</strong></p>
+<p>row = 0</p>
+<p>col = 0</p>
+<p># 类型 0 empty,1 string, 2 number, 3 date, 4 boolean, 5 error</p>
+<p>ctype = 1 value = ‘单元格的值’</p>
+<p>xf = 0 # 扩展的格式化</p>
+<p>table.put_cell(row, col, ctype, value, xf)</p>
+<p>table.cell(0,0)  #单元格的值’</p>
+<p>table.cell(0,0).value #单元格的值’</p>
+<h2 id="实际使用"><a href="#实际使用" class="headerlink" title="实际使用"></a>实际使用</h2><p>我的目的是遍历所有的excel表格，然后根据统计出来的50分以上的人的学号的最后几位， 查询出他的姓名和英语成绩。</p>
+<p>Talk is cheap，show me the code！</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># -*- coding:utf8 -*-</span></div><div class="line"><span class="keyword">import</span> xlrd</div><div class="line"><span class="keyword">import</span> os</div><div class="line">path = <span class="string">r"/Users/liruopeng/Downloads/score/english"</span></div><div class="line"></div><div class="line">id = <span class="string">u'85028'</span></div><div class="line"></div><div class="line"><span class="keyword">for</span> rt, dirs, files <span class="keyword">in</span> os.walk(path):</div><div class="line">    <span class="keyword">for</span> f <span class="keyword">in</span> files:</div><div class="line">        <span class="keyword">if</span> f != <span class="string">".DS_Store"</span>:</div><div class="line">            path = rt+os.path.sep+f</div><div class="line">            workbook = xlrd.open_workbook(path)</div><div class="line">            sheet_names = workbook.sheet_names()</div><div class="line">            all_row = workbook.sheet_by_index(<span class="number">0</span>)</div><div class="line">            length = all_row.nrows</div><div class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> xrange(length):</div><div class="line">                row = all_value.row_values(i)</div><div class="line">                <span class="keyword">if</span> row[<span class="number">0</span>].endswith(id):</div><div class="line">                    <span class="keyword">print</span> row[<span class="number">1</span>].encode(<span class="string">'utf8'</span>),row[<span class="number">8</span>]</div><div class="line">                    <span class="comment"># print path</span></div><div class="line">                    <span class="comment"># break</span></div></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">李广鸿 <span class="number">70.0</span></div><div class="line">吴佳銮 <span class="number">94.0</span></div><div class="line">李汉清 <span class="number">78.0</span></div><div class="line">朱南欣 <span class="number">80.0</span></div></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>python 操作 excel还是比价容易的，边查遍写，该脚本在15分钟以内就写完了。在后续的查找中，大幅度提高了我们的效率。不过下次还有这样的事，还是把数据导入到数据库中吧。</p>
+
+  </section>
+
+  <section class="post-comments">
+
+    <!-- 将评论系统（例如Disqus、多说、友言、畅言等）提供的代码片段粘贴在这里 -->
+    
+</section>
+
+
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">&copy; 2014-2015. | 由<a href="https://hexo.io/">Hexo</a>强力驱动 | 主题<a href="https://github.com/someus/huno">Huno</a></span>
+    
+</footer>
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/timo/js/jquery.min.js"></script>
+    <script src="/timo/js/main.js"></script>
+    <script src="/timo/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/timo/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>
