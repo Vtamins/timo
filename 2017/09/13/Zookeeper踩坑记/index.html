@@ -23,7 +23,7 @@
 <meta property="og:url" content="https://vtamins.github.io/timo/2017/09/13/Zookeeper踩坑记/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="还记得上一次配置Zookeeper是半年以前的事了，这半年一直没有改动Zookeeper的配置文件，直到实习回校，自己的集群没有，重新下载搭一个Zookeeper集群，使用的最新的Zookeeper 3.4.10，结果立马踩到了坑里面，搞了一两个小时才弄好。">
-<meta property="og:updated_time" content="2017-09-13T13:19:56.000Z">
+<meta property="og:updated_time" content="2017-09-13T16:03:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Zookeeper踩坑记 | Hexo">
 <meta name="twitter:description" content="还记得上一次配置Zookeeper是半年以前的事了，这半年一直没有改动Zookeeper的配置文件，直到实习回校，自己的集群没有，重新下载搭一个Zookeeper集群，使用的最新的Zookeeper 3.4.10，结果立马踩到了坑里面，搞了一两个小时才弄好。">
@@ -196,7 +196,13 @@ classes that you can use:
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">tickTime=2000</div><div class="line">dataDir=/home/dengyiping/data/zookeeper</div><div class="line">clientPort=2181</div><div class="line">initLimit=5</div><div class="line">syncLimit=2</div><div class="line">server.1=0.0.0.0:2888:3888</div><div class="line">server.2=hadoop-2:2888:3888</div><div class="line">server.3=hadoop-3:2888:3888</div></pre></td></tr></table></figure>
 <h1 id="三、分析原因"><a href="#三、分析原因" class="headerlink" title="三、分析原因"></a>三、分析原因</h1><p>有人是这么说的</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">How have defined the ip of the local server in each node? If you have given the public ip, then the listener would have failed to connect to the port. You must specify 0.0.0.0 for the current node.</div></pre></td></tr></table></figure>
-<p>我认为是Zookeeper在代码实现中留下的坑，待有空我来看看他的代码。</p>
+<p>原来是非静态IP惹的祸。我的新集群是非静态IP的。<br>先看到我的hosts文件.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4</div><div class="line"></div><div class="line">::1         localhost localhost.localdomain localhost6 localhost6.localdomain6</div><div class="line">10.36.8.138 hadoop-1</div><div class="line">10.36.8.139 hadoop-2</div><div class="line">10.36.8.140 hadoop-3</div></pre></td></tr></table></figure>
+<p>由于我并没有设置静态IP，因此 当寻找 当前的 域名时，找到的是 10.36.8.138 这个地址。</p>
+<p>并不是本机地址</p>
+<p>改成如下解决问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4</div><div class="line">::1         localhost localhost.localdomain localhost6 localhost6.localdomain6</div><div class="line">0.0.0.0  hadoop-2</div><div class="line"></div><div class="line">10.36.8.138 hadoop-1</div><div class="line">10.36.8.140 hadoop-3</div><div class="line">~</div></pre></td></tr></table></figure>
+<p>注意：如果设置的是静态IP则不会产生这个问题，因为查找域名时，会直接链接到本地网卡。</p>
 
   </section>
 
